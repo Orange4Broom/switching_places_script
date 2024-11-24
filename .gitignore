@@ -1,0 +1,43 @@
+# Ignore compiled binaries
+*.o
+*.out
+*.exe
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+*.swp
+*.bak
+*.old
+
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore environment variable files
+.env
+.config
+
+# Ignore backup files
+*~
+
+# Ignore IDE specific files
+.vscode/
+.idea/
+
+# Ignore coverage reports
+coverage/
+*.lcov
+
+# Ignore build directories
+build/
+dist/
+
+# Ignore dependency directories
+vendor/
+
+# Ignore config.sh but not config.example.sh
+config.sh
+!config.example.sh

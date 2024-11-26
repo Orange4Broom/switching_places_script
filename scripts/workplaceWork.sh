@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Path to the configuration file
-CONFIG_FILE="/Users/yourusername/switching_places_script/scripts/wifi_config.txt"
+CONFIG_FILE="/Users/orangebroom/switching_places_script/wifi_config.txt"
 
 # Get the current Wi-Fi network name
 CURRENT_WIFI=$(networksetup -getairportnetwork en0 | awk -F': ' '{print $2}')
@@ -28,6 +28,15 @@ while IFS= read -r line; do
     fi
 done < "$CONFIG_FILE"
 
+# Run switchWork.sh script
+SWITCH_WORK_SCRIPT="/Users/orangebroom/switching_places_script/scripts/switchWork.sh"
+if [ -f "$SWITCH_WORK_SCRIPT" ]; then
+    echo "Running switchWork.sh script..."
+    bash "$SWITCH_WORK_SCRIPT"
+else
+    echo "switchWork.sh script not found at $SWITCH_WORK_SCRIPT"
+fi
+
 # Open Spotify
 open -a "Spotify"
 
@@ -35,7 +44,7 @@ open -a "Spotify"
 open -a "Zed"
 
 # Absolute path to the URLs file
-URLS_FILE="/Users/yourusername/switching_places_script/scripts/urls.txt"
+URLS_FILE="/Users/orangebroom/switching_places_script/urls.txt"
 
 # Open Arc with URLs from urls.txt
 while IFS= read -r url; do

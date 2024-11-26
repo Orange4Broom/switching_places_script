@@ -75,8 +75,8 @@ Do you want to change the global configuration? (y/n)
 Přepínám na work
 Přepnuto na work
 Updated Git Configuration:
-user.name=Jakub Trnčák
-user.email=trncak@rtsoft.cz
+user.name=NewUserName
+user.email=NewEmail
 ```
 
 ### Example 2: Switching to Home Configuration

@@ -1,8 +1,9 @@
 #!/bin/bash
 set -e
 
-source ../colors.sh
-source ../config.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../colors.sh"
+source "$SCRIPT_DIR/../config.sh"
 
 echo -e "${CYAN}Současný Git Configuration:${NC}"
 git config --list | grep 'user.name\|user.email' | head -n 2

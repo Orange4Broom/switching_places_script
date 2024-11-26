@@ -41,5 +41,8 @@ vendor/
 # Ignore config.sh but not config.example.sh
 config.sh
 urls.txt
+wifi_config.txt
+
 !config.example.sh
 !urls.example.txt
+!wifi_config.example.txt

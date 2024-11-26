@@ -1,5 +1,33 @@
 #!/bin/bash
 
+# Path to the configuration file
+CONFIG_FILE="/Users/yourusername/switching_places_script/scripts/wifi_config.txt"
+
+# Get the current Wi-Fi network name
+CURRENT_WIFI=$(networksetup -getairportnetwork en0 | awk -F': ' '{print $2}')
+
+# Function to change IP address
+change_ip() {
+    local wifi_name=$1
+    local ip_address=$2
+    local router_address=$3
+
+    echo "Changing IP address for Wi-Fi network: $wifi_name to $ip_address with router $router_address"
+    sudo networksetup -setmanual "Wi-Fi" $ip_address 255.255.255.0 $router_address
+}
+
+# Read the configuration file and change IP address based on the current Wi-Fi network
+while IFS= read -r line; do
+    wifi_name=$(echo $line | awk -F'"' '{print $2}')
+    ip_address=$(echo $line | awk '{print $3}')
+    router_address=$(echo $line | awk '{print $4}')
+
+    if [ "$CURRENT_WIFI" == "$wifi_name" ]; then
+        change_ip "$wifi_name" "$ip_address" "$router_address"
+        break
+    fi
+done < "$CONFIG_FILE"
+
 # Open Spotify
 open -a "Spotify"
 

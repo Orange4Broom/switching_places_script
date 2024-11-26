@@ -1,0 +1,1 @@
+"Wifi name" ip_address router_address

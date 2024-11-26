@@ -1,132 +1,114 @@
-# Switching Places Script
+# Workplace Automation Script
 
-This project provides a script to switch between different Git configurations (work and home) easily.
+This repository contains a script to automate the setup of your workplace environment. The script changes the IP address based on the Wi-Fi network you are connected to and opens various applications and URLs.
 
-## Table of Contents
+## Files
 
-- [Getting Started](#getting-started)
-- [Usage](#usage)
-- [Custom Command Setup](#custom-command-setup)
-- [Examples](#examples)
+- `workplaceWork.sh`: The main script to automate the setup.
+- `wifi_config.txt`: Configuration file containing Wi-Fi network names, IP addresses, and router addresses.
+- `urls.txt`: File containing URLs to be opened in the Arc browser.
 
-## Getting Started
+## Setup
 
-### Prerequisites
+1. **Clone the Repository**
 
-- Git must be installed on your system.
-- Bash shell (Linux, macOS, or Git Bash on Windows).
+   ```sh
+   git clone https://github.com/yourusername/switching_places_script.git
+   cd switching_places_script/scripts
+   ```
 
-### Cloning the Repository
+2. **Create the Configuration Files**
 
-To clone the repository, run the following command:
+   - Create `wifi_config.txt` with the following format:
 
-```sh
-git clone https://github.com/yourusername/switching_places_script.git
-cd switching_places_script
-```
+     ```txt
+     "Wifi name" ip_address router_address
+     ```
 
-## Usage
+   - Create `urls.txt` with the URLs you want to open, one per line:
 
-### Running the Script
+     ```txt
+      https://github.com/Orange4Broom
+      https://www.example1.com
+      https://www.example2.com
 
-To run the script, navigate to the `scripts` directory and execute the `switch.sh` script:
+     ```
 
-```sh
-cd scripts
-./switch.sh
-```
+3. **Update the Script**
 
-The script will prompt you to choose between switching to work or home Git configurations and whether to apply the changes globally or locally.
+   Ensure the paths in `workplaceWork.sh` are correct:
 
-### Setting Up Custom Command
+   ```sh
+   #!/bin/bash
 
-You can set up a custom command to run the script more conveniently. Follow these steps:
+   # Path to the configuration file
+   CONFIG_FILE="/Users/yourusername/switching_places_script/scripts/wifi_config.txt"
 
-1. Open your shell configuration file (e.g., `.bashrc`, `.zshrc`, or `.bash_profile`) in a text editor.
-2. Add the following alias to the file:
+   # Get the current Wi-Fi network name
+   CURRENT_WIFI=$(networksetup -getairportnetwork en0 | awk -F': ' '{print $2}')
 
-```sh
-alias yk='~/path/to/switching_places_script/scripts/switch.sh'
-```
+   # Function to change IP address
+   change_ip() {
+       local wifi_name=$1
+       local ip_address=$2
+       local router_address=$3
 
-Replace `~/path/to/switching_places_script` with the actual path to the cloned repository.
+       echo "Changing IP address for Wi-Fi network: $wifi_name to $ip_address with router $router_address"
+       sudo networksetup -setmanual "Wi-Fi" $ip_address 255.255.255.0 $router_address
+   }
 
-3. Save the file and reload the shell configuration:
+   # Read the configuration file and change IP address based on the current Wi-Fi network
+   while IFS= read -r line; do
+       wifi_name=$(echo $line | awk -F'"' '{print $2}')
+       ip_address=$(echo $line | awk '{print $3}')
+       router_address=$(echo $line | awk '{print $4}')
 
-```sh
-source ~/.bashrc  # or source ~/.zshrc, source ~/.bash_profile
-```
+       if [ "$CURRENT_WIFI" == "$wifi_name" ]; then
+           change_ip "$wifi_name" "$ip_address" "$router_address"
+           break
+       fi
+   done < "$CONFIG_FILE"
 
-Now you can run the script using the custom command `yk`.
+   # Open Spotify
+   open -a "Spotify"
 
-## Examples
+   # Open Zed
+   open -a "Zed"
 
-### Example 1: Switching to Work Configuration
+   # Absolute path to the URLs file
+   URLS_FILE="/Users/yourusername/switching_places_script/scripts/urls.txt"
 
-```sh
-$ ./switch.sh
-Current Git Configuration:
-user.name=CurrentUser
-user.email=currentuser@example.com
-Vyber jestli chceš přepnout na work (w) nebo home (h)
-> w
-Do you want to change the global configuration? (y/n)
-> y
-Přepínám na work
-Přepnuto na work
-Updated Git Configuration:
-user.name=NewUserName
-user.email=NewEmail
-```
+   # Open Arc with URLs from urls.txt
+   while IFS= read -r url; do
+       open -a "Arc" --args "$url"
+   done < "$URLS_FILE"
 
-### Example 2: Switching to Home Configuration
+   # Open Slack
+   open -a "Slack"
 
-```sh
-$ ./switch.sh
-Current Git Configuration:
-user.name=CurrentUser
-user.email=currentuser@example.com
-Vyber jestli chceš přepnout na work (w) nebo home (h)
-> h
-Do you want to change the global configuration? (y/n)
-> n
-Přepínám na home
-Přepnuto na home
-Updated Git Configuration:
-user.name=Orange4Broom
-user.email=orang4broom@gmail.com
-```
+   # Open Mails
+   open -a "Mail"
 
-### Example 3: Using Custom Command
+   # Open OrbStack
+   open -a "OrbStack"
+   ```
 
-```sh
-$ yk
-Current Git Configuration:
-user.name=CurrentUser
-user.email=currentuser@example.com
-Vyber jestli chceš přepnout na work (w) nebo home (h)
-> w
-Do you want to change the global configuration? (y/n)
-> y
-Přepínám na work
-Přepnuto na work
-Updated Git Configuration:
-user.name=Jakub Trnčák
-user.email=trncak@rtsoft.cz
-```
+4. **Make the Script Executable**
 
-## License
+   ```sh
+   chmod +x workplaceWork.sh
+   ```
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+5. **Run the Script**
 
-## Acknowledgments
+   ```sh
+   ./workplaceWork.sh
+   ```
 
-- Thanks to the Git community for providing excellent tools and documentation.
-```
+## Notes
 
-### Explanation:
-- **Getting Started**: Instructions on prerequisites, cloning the repository, and navigating to the project directory.
-- **Usage**: Instructions on how to run the script and set up a custom command.
-- **Examples**: Examples of running the script and using the custom command.
-- **License**: Placeholder for license information.
-- **Acknowledgments**: Placeholder for acknowledgments.
+- Ensure that the Wi-Fi network names, IP addresses, and router addresses in the `wifi_config.txt` file are correct.
+- Replace `/Users/yourusername/switching_places_script/scripts/wifi_config.txt` and `/Users/yourusername/switching_places_script/scripts/urls.txt` with the actual paths to your configuration and URLs files.
+- The `networksetup` command requires administrative privileges to change network settings, so you may be prompted to enter your password.
+- The `en0` interface is typically used for Wi-Fi on macOS, but you can verify this by running `networksetup -listallhardwareports` and adjusting the script if necessary.
+- The script sets a manual IP address with a subnet mask of `255.255.255.0`. Adjust this value as needed for your network configuration.

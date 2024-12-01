@@ -37,6 +37,12 @@ work_hours_remaining=$((workdays_remaining * 8))
 total_workdays=$((workdays_to_current_day + workdays_remaining))
 total_work_hours=$((total_workdays * 8))
 
-echo -e "\033[1;34mMonth:\033[0m \033[1;32m$current_month $current_year\033[0m \033[1;34mDay:\033[0m \033[1;32m$current_day\033[0m"
-echo -e "\033[1;34mUp to Now:\033[0m \033[1;32m$workdays_to_current_day days, $work_hours_to_current_day hrs\033[0m \033[1;34mRemaining:\033[0m \033[1;32m$workdays_remaining days, $work_hours_remaining hrs\033[0m"
+# Output the results with improved formatting
+echo -e "\033[1;34m========================================\033[0m"
+echo -e "\033[1;34m|         Monthly Work Hours Report    |\033[0m"
+echo -e "\033[1;34m========================================\033[0m"
+echo -e "\033[1;34mMonth:\033[0m \033[1;32m$current_month $current_year\033[0m \033[1;34m| Day:\033[0m \033[1;32m$current_day\033[0m"
+echo -e "\033[1;34mUp to Now:\033[0m \033[1;32m$workdays_to_current_day days, $work_hours_to_current_day hrs\033[0m"
+echo -e "\033[1;34mRemaining:\033[0m \033[1;32m$workdays_remaining days, $work_hours_remaining hrs\033[0m"
 echo -e "\033[1;34mTotal:\033[0m \033[1;32m$total_workdays days, $total_work_hours hrs\033[0m"
+echo -e "\033[1;34m========================================\033[0m"

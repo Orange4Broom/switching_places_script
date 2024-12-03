@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# Get the current date, month, and year
+# Získání aktuálního datumu, měsíce a roku
 current_day=$(date +"%d")
 current_month=$(date +"%B")
 current_year=$(date +"%Y")
 current_month_number=$(date +"%m")
 
-# Get the number of days in the current month
+# Získání počtu dní v aktuálním měsíci
 days_in_month=$(cal | awk 'NF {DAYS = $NF}; END {print DAYS}')
 
-# Calculate the number of workdays (Monday to Friday) from the start of the month to the current day
+# Vypočet počtu pracovních dní (pondělí až pátek) od začátku měsíce do aktuálního dne
 workdays_to_current_day=0
 for (( day=1; day<=$current_day; day++ ))
 do
@@ -19,7 +19,7 @@ do
     fi
 done
 
-# Calculate the number of workdays from the current day to the end of the month
+# Vypočet početu pracovních dní od aktuálního dne do konce měsíce
 workdays_remaining=0
 for (( day=current_day+1; day<=$days_in_month; day++ ))
 do
@@ -29,19 +29,19 @@ do
     fi
 done
 
-# Calculate the total work hours (assuming 8 hours per workday)
+# Vypočet celkového početu pracovních hodin (předpokládá se 8 hodin na pracovní den)
 work_hours_to_current_day=$((workdays_to_current_day * 8))
 work_hours_remaining=$((workdays_remaining * 8))
 
-# Calculate the total work hours for the entire month
+# Vypočet celkového početu pracovních hodin za celý měsíc
 total_workdays=$((workdays_to_current_day + workdays_remaining))
 total_work_hours=$((total_workdays * 8))
 
-# Get the git user name and email
+# Získání jména a emailu git uživatele
 git_user_name=$(git config --list | grep 'user.name' | cut -d '=' -f 2)
 git_user_email=$(git config --list | grep 'user.email' | cut -d '=' -f 2)
 
-# Output the results with improved formatting
+# Výpis výsledků s vylepšeným formátováním
 echo -e "\033[1;34m================================================\033[0m"
 echo -e "\033[1;34m|             Monthly Work Hours Report        |\033[0m"
 echo -e "\033[1;34m================================================\033[0m"

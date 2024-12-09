@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Získání aktuálního datumu, měsíce a roku
-current_day=$(date +"%d")
+current_day=$(date +"%-d")
 current_month=$(date +"%B")
 current_year=$(date +"%Y")
-current_month_number=$(date +"%m")
+current_month_number=$(date +"%-m")
 
 # Získání počtu dní v aktuálním měsíci
 days_in_month=$(cal | awk 'NF {DAYS = $NF}; END {print DAYS}')
